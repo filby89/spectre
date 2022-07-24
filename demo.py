@@ -98,7 +98,7 @@ def crop_face(frame, landmarks, scale=1.0):
 
 def main(args):
     args.crop_face = True
-
+    spectre_cfg.model_path = "pretrained/spectre_model.tar"
 
     spectre = SPECTRE(spectre_cfg, args.device)
     spectre.eval()

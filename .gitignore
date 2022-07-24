@@ -31,7 +31,7 @@ Thumbs.db
 ############
 *.mat
 *.pkl
-*.obj
+#*.obj
 *.dat
 *.npz
 

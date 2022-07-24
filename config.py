@@ -82,7 +82,7 @@ cfg.train.evaluation_steps = 30000
 cfg.loss = CN()
 cfg.loss.train = CN()
 
-cfg.model.use_tex = True
+cfg.model.use_tex = False
 cfg.model.regularization_type = 'nonlinear'
 cfg.model.backbone = 'mobilenetv2' # perceptual encoder backbone
 
