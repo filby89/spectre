@@ -14,7 +14,7 @@ echo -e "\nDownloading FLAME..."
 mkdir -p data/FLAME2020/
 wget --post-data "username=$username&password=$password" 'https://download.is.tue.mpg.de/download.php?domain=flame&sfile=FLAME2020.zip&resume=1' -O './FLAME2020.zip' --no-check-certificate --continue
 unzip FLAME2020.zip -d data/FLAME2020/
-#rm -rf FLAME2020.zip
+rm -rf FLAME2020.zip
 
 echo -e "\nDownload pretrained SPECTRE model..."
 gdown --id 1vmWX6QmXGPnXTXWFgj67oHzOoOmxBh6B

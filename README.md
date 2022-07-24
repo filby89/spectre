@@ -1,151 +1,68 @@
+<div align="center">
 # SPECTRE: Visual Speech-Aware Perceptual 3D Facial Expression Reconstruction from Videos
 
 
 <p align="center"> 
 <img src="cover.png">
 </p>
-<p align="center">input image, aligned reconstruction, animation with various poses & expressions<p align="center">
+<p align="center"> Our method performs visual-speech aware 3D reconstruction so that speech perception from the original footage is preserved in the reconstructed talking head. On the left we include the word/phrase being said for each example. <p align="center">
+</div>
 
 This is the official Pytorch implementation of SPECTRE. 
 
-## Quickstart
-Clone the repo:
+## Installation
+You need to have installed a working version of Pytorch with Python 3.6 or higher and Pytorch 3D.
+
+Clone the repo and its submodules:
   ```bash
-  git clone https://github.com/filby89/spectre
+  git clone --recurse-submodules -j4 https://github.com/filby89/spectre
   cd spectre
   ```  
 
-### Requirements
-* Python 3.7 (numpy, skimage, scipy, opencv)  
-* PyTorch >= 1.6 (pytorch3d)  
-* face-alignment (Optional for detecting face)  
-  You can run 
-  ```bash
-  pip install -r requirements.txt
-  ```
-  Or use virtual environment by runing 
-  ```bash
-  bash install_conda.sh
-  ```
-  For visualization, we use our rasterizer that uses pytorch JIT Compiling Extensions. If there occurs a compiling error, you can install [pytorch3d](https://github.com/facebookresearch/pytorch3d/blob/master/INSTALL.md) instead and set --rasterizer_type=pytorch3d when running the demos.
-
-### Usage
-1. Prepare data   
-    a. download [FLAME model](https://flame.is.tue.mpg.de/download.php), choose **FLAME 2020** and unzip it, copy 'generic_model.pkl' into ./data  
-    b. download [DECA trained model](https://drive.google.com/file/d/1rp8kdyLPvErw2dTmqtjISRVvQLj6Yzje/view?usp=sharing), and put it in ./data (**no unzip required**)  
-    c. (Optional) follow the instructions for the [Albedo model](https://github.com/TimoBolkart/BFM_to_FLAME) to get 'FLAME_albedo_from_BFM.npz', put it into ./data
-
-2. Run demos  
-    a. **reconstruction**  
-    ```bash
-    python demos/demo_reconstruct.py -i TestSamples/examples --saveDepth True --saveObj True
-    ```   
-    to visualize the predicted 2D landmanks, 3D landmarks (red means non-visible points), coarse geometry, detailed geometry, and depth.   
-    <p align="center">   
-    <img src="Doc/images/id04657-PPHljWCZ53c-000565_inputs_inputs_vis.jpg">
-    </p>  
-    <p align="center">   
-    <img src="Doc/images/IMG_0392_inputs_vis.jpg">
-    </p>  
-    You can also generate an obj file (which can be opened with Meshlab) that includes extracted texture from the input image.  
-
-    Please run `python demos/demo_reconstruct.py --help` for more details. 
-
-    b. **expression transfer**   
-    ```bash
-    python demos/demo_transfer.py
-    ```   
-    Given an image, you can reconstruct its 3D face, then animate it by tranfering expressions from other images. 
-    Using Meshlab to open the detailed mesh obj file, you can see something like that:
-    <p align="center"> 
-    <img src="Doc/images/soubhik.gif">
-    </p>  
-    (Thank Soubhik for allowing me to use his face ^_^)   
-    
-    Note that, you need to set '--useTex True' to get full texture.   
-
-    c. for the [teaser gif](https://github.com/YadiraF/DECA/results/teaser.gif) (**reposing** and **animation**)
-    ```bash
-    python demos/demo_teaser.py 
-    ``` 
-    
-    More demos and training code coming soon.
-
-## Evaluation
-DECA (ours) achieves 9% lower mean shape reconstruction error on the [NoW Challenge](https://ringnet.is.tue.mpg.de/challenge) dataset compared to the previous state-of-the-art method.  
-The left figure compares the cumulative error of our approach and other recent methods (RingNet and Deng et al. have nearly identitical performance, so their curves overlap each other). Here we use point-to-surface distance as the error metric, following the NoW Challenge.  
-<p align="left"> 
-<img src="Doc/images/DECA_evaluation_github.png">
-</p>
-
-For more details of the evaluation, please check our [arXiv paper](https://arxiv.org/abs/2012.04012). 
-
-## Training
-1. Prepare Training Data
-
-    a. Download image data  
-    In DECA, we use [VGGFace2](https://arxiv.org/pdf/1710.08092.pdf), [BUPT-Balancedface](http://www.whdeng.cn/RFW/Trainingdataste.html) and [VoxCeleb2](https://www.robots.ox.ac.uk/~vgg/data/voxceleb/vox2.html)  
-
-    b. Prepare label  
-    [FAN](https://github.com/1adrianb/2D-and-3D-face-alignment) to predict 68 2D landmark  
-    [face_segmentation](https://github.com/YuvalNirkin/face_segmentation) to get skin mask  
-
-    c. Modify dataloader   
-    Dataloaders for different datasets are in decalib/datasets, use the right path for prepared images and labels. 
-
-2. Download face recognition trained model  
-    We use the model from [VGGFace2-pytorch](https://github.com/cydonia999/VGGFace2-pytorch) for calculating identity loss,
-    download [resnet50_ft](https://drive.google.com/file/d/1A94PAAnwk6L7hXdBXLFosB_s0SzEhAFU/view),
-    and put it into ./data  
-
-3. Start training
-
-    Train from scratch: 
-    ```bash
-    python main_train.py --cfg configs/release_version/deca_pretrain.yml 
-    python main_train.py --cfg configs/release_version/deca_coarse.yml 
-    python main_train.py --cfg configs/release_version/deca_detail.yml 
-    ```
-    In the yml files, write the right path for 'output_dir' and 'pretrained_modelpath'.  
-    You can also use [released model](https://drive.google.com/file/d/1rp8kdyLPvErw2dTmqtjISRVvQLj6Yzje/view) as pretrained model, then ignor the pretrain step.
-
-## Citation
-If you find our work useful to your research, please consider citing:
-```
-@inproceedings{DECA:Siggraph2021,
-  title={Learning an Animatable Detailed {3D} Face Model from In-The-Wild Images},
-  author={Feng, Yao and Feng, Haiwen and Black, Michael J. and Bolkart, Timo},
-  journal = {ACM Transactions on Graphics, (Proc. SIGGRAPH)}, 
-  volume = {40}, 
-  number = {8}, 
-  year = {2021}, 
-  url = {https://doi.org/10.1145/3450626.3459936} 
-}
+Install the face_alignment and face_detection packages:
+```bash
+cd external/face_alignment
+pip install -e .
+cd ../face_detection
+pip install -e .
 ```
 
-<!-- ## Notes
-1. Training code will also be released in the future. -->
+Download the FLAME model and the pretrained SPECTRE model:
+```bash
+bash quick_install.sh
+```
 
-## License
-This code and model are available for non-commercial scientific research purposes as defined in the [LICENSE](https://github.com/YadiraF/DECA/blob/master/LICENSE) file.
-By downloading and using the code and model you agree to the terms in the [LICENSE](https://github.com/YadiraF/DECA/blob/master/LICENSE). 
+
+
+[//]: # (Create a new conda environment and install the requirements:)
+
+[//]: # (```bash)
+
+[//]: # (conda create -n "spectre" python=3.8)
+
+[//]: # (pip install -r requirements.txt)
+
+[//]: # (```)
+
+## Demo
+Samples are included in ``samples`` folder. You can run the demo by running 
+
+```bash
+python demo.py --input samples/MEAD/M003_level_1_happy_024.mp4 --audio
+```
+
+The audio flag extracts audio from the input video and puts it in the output shape video for visualization purposes. More options and samples will be available soon.
+
+## Training and Testing
+Training code will be released shortly in the following week after some refactoring for easier usage.
+
 
 ## Acknowledgements
-For functions or scripts that are based on external sources, we acknowledge the origin individually in each file.  
-Here are some great resources we benefit:  
-- [FLAME_PyTorch](https://github.com/soubhiksanyal/FLAME_PyTorch) and [TF_FLAME](https://github.com/TimoBolkart/TF_FLAME) for the FLAME model  
-- [Pytorch3D](https://pytorch3d.org/), [neural_renderer](https://github.com/daniilidis-group/neural_renderer), [SoftRas](https://github.com/ShichenLiu/SoftRas) for rendering  
-- [kornia](https://github.com/kornia/kornia) for image/rotation processing  
-- [face-alignment](https://github.com/1adrianb/face-alignment) for cropping   
-- [FAN](https://github.com/1adrianb/2D-and-3D-face-alignment) for landmark detection
-- [face_segmentation](https://github.com/YuvalNirkin/face_segmentation) for skin mask
-- [VGGFace2-pytorch](https://github.com/cydonia999/VGGFace2-pytorch) for identity loss  
+This repo is has been heavily based on the original implementation of [DECA](https://github.com/YadiraF/DECA/). We also acknowledge the following 
+repositories which we have benefited greatly from as well:
 
-We would also like to thank other recent public 3D face reconstruction works that allow us to easily perform quantitative and qualitative comparisons :)  
-[RingNet](https://github.com/soubhiksanyal/RingNet), 
-[Deep3DFaceReconstruction](https://github.com/microsoft/Deep3DFaceReconstruction/blob/master/renderer/rasterize_triangles.py), 
-[Nonlinear_Face_3DMM](https://github.com/tranluan/Nonlinear_Face_3DMM),
-[3DDFA-v2](https://github.com/cleardusk/3DDFA_V2),
-[extreme_3d_faces](https://github.com/anhttran/extreme_3d_faces),
-[facescape](https://github.com/zhuhao-nju/facescape)
-<!-- 3DMMasSTN, DenseReg, 3dmm_cnn, vrn, pix2vertex -->
+
+- [EMOCA](https://github.com/radekd91/emoca)
+- [face_alignment](https://github.com/hhj1897/face_alignment)
+- [face_detection](https://github.com/hhj1897/face_detection)
+- [Visual_Speech_Recognition_for_Multiple_Languages](https://github.com/mpc001/Visual_Speech_Recognition_for_Multiple_Languages)

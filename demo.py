@@ -98,7 +98,7 @@ def crop_face(frame, landmarks, scale=1.0):
 
 def main(args):
     args.crop_face = True
-    spectre_cfg.model_path = "pretrained/spectre_model.tar"
+    spectre_cfg.pretrained_modelpath = "pretrained/spectre_model.tar"
 
     spectre = SPECTRE(spectre_cfg, args.device)
     spectre.eval()
@@ -215,7 +215,7 @@ def main(args):
         wav = torch.FloatTensor(wav)
         if len(wav.shape) == 1:
             wav = wav.unsqueeze(0)
-        print(fps, vid_shape.shape, wav.shape)
+        # print(fps, vid_shape.shape, wav.shape)
         torchvision.io.write_video(videofolder+"_shape.mp4", vid_shape, fps=fps, audio_codec='aac', audio_array=wav, audio_fps=sr)
     else:
         torchvision.io.write_video(videofolder+"_shape.mp4", vid_shape, fps=fps)
@@ -225,13 +225,11 @@ if __name__ == '__main__':
 
     parser.add_argument('-i', '--input', default='examples', type=str,
                         help='path to the test data, can be image folder, image path, image list, video')
-    parser.add_argument('-o', '--outpath', default='examples/results', type=str,
-                        help='path to the output directory, where results(obj, txt files) will be stored.')
+    # parser.add_argument('-o', '--outpath', default='examples/results', type=str,
+    #                     help='path to the output directory, where results(obj, txt files) will be stored.')
     parser.add_argument('--device', default='cuda', type=str,
                         help='set device, cpu for using cpu')
     parser.add_argument('--audio', action='store_true',
                         help='extract audio from the original video and add it to the output video')
-    parser.add_argument('--render-orig', action='store_true',
-                        help='render results on the original image')
 
     main(parser.parse_args())
