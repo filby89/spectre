@@ -1,0 +1,57 @@
+# Compiled source #
+###################
+*.o
+*.so
+
+# Packages #
+############
+# it's better to unpack these files and commit the raw source
+# git has its own built in compression methods
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
+
+# OS generated files #
+######################
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+.vscode
+
+# 3D data #
+############
+*.mat
+*.pkl
+*.obj
+*.dat
+*.npz
+
+# python file #
+############
+*.pyc
+__pycache__
+
+## deca data
+*results*
+# *_vis.jpg
+## internal use
+cluster_scripts
+internal
+data/FLAME2020
+data/FLAMETexture
+src/deca.py
+src/trainer_direct.py
+logs/
+data/ResNet50
+data/deca_model.tar
+data/LRS3_lists.pkl
+data/FLAME_albedo_from_BFM.npz
