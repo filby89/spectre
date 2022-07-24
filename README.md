@@ -1,4 +1,3 @@
-<div align="center">
 # SPECTRE: Visual Speech-Aware Perceptual 3D Facial Expression Reconstruction from Videos
 
 
@@ -6,7 +5,6 @@
 <img src="cover.png">
 </p>
 <p align="center"> Our method performs visual-speech aware 3D reconstruction so that speech perception from the original footage is preserved in the reconstructed talking head. On the left we include the word/phrase being said for each example. <p align="center">
-</div>
 
 This is the official Pytorch implementation of SPECTRE. 
 
@@ -48,7 +46,7 @@ bash quick_install.sh
 Samples are included in ``samples`` folder. You can run the demo by running 
 
 ```bash
-python demo.py --input samples/MEAD/M003_level_1_happy_024.mp4 --audio
+python demo.py --input samples/LRS3/0Fi83BHQsMA_00002.mp4 --audio
 ```
 
 The audio flag extracts audio from the input video and puts it in the output shape video for visualization purposes. More options and samples will be available soon.
@@ -60,7 +58,6 @@ Training code will be released shortly in the following week after some refactor
 ## Acknowledgements
 This repo is has been heavily based on the original implementation of [DECA](https://github.com/YadiraF/DECA/). We also acknowledge the following 
 repositories which we have benefited greatly from as well:
-
 
 - [EMOCA](https://github.com/radekd91/emoca)
 - [face_alignment](https://github.com/hhj1897/face_alignment)
