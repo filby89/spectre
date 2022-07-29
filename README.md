@@ -39,6 +39,7 @@ cd external/face_alignment
 pip install -e .
 cd ../face_detection
 pip install -e .
+cd ../..
 ```
 
 Download the FLAME model and the pretrained SPECTRE model:
