@@ -1,12 +1,26 @@
-# SPECTRE: Visual Speech-Aware Perceptual 3D Facial Expression Reconstruction from Videos
+<div align="center">
 
+  # SPECTRE: Visual Speech-Aware Perceptual 3D Facial Expression Reconstruction from Videos
+
+[![Paper](https://img.shields.io/badge/arXiv-2207.11094-brightgreen)](https://arxiv.org/abs/2207.11094)
+[![Project WebPage](https://img.shields.io/badge/Project-webpage-blue)](https://filby89.github.io/spectre/)
+
+</div>
 
 <p align="center"> 
 <img src="cover.png">
 </p>
 <p align="center"> Our method performs visual-speech aware 3D reconstruction so that speech perception from the original footage is preserved in the reconstructed talking head. On the left we include the word/phrase being said for each example. <p align="center">
 
-This is the official Pytorch implementation of SPECTRE. 
+This is the official Pytorch implementation of the paper:
+  
+```
+Visual Speech-Aware Perceptual 3D Facial Expression Reconstruction from Videos
+Panagiotis P. Filntisis, George Retsinas, Foivos Paraperas-Papantoniou, Athanasios Katsamanis, Anastasios Roussos, and Petros Maragos
+arXiv 2022
+```
+
+
 
 ## Installation
 You need to have installed a working version of Pytorch with Python 3.6 or higher and Pytorch 3D.
@@ -63,3 +77,17 @@ repositories which we have benefited greatly from as well:
 - [face_alignment](https://github.com/hhj1897/face_alignment)
 - [face_detection](https://github.com/hhj1897/face_detection)
 - [Visual_Speech_Recognition_for_Multiple_Languages](https://github.com/mpc001/Visual_Speech_Recognition_for_Multiple_Languages)
+
+## Citation
+If your research benefits from this repository, consider citing the following:
+
+```
+@misc{filntisis2022visual,
+  title = {Visual Speech-Aware Perceptual 3D Facial Expression Reconstruction from Videos},
+  author = {Filntisis, Panagiotis P. and Retsinas, George and Paraperas-Papantoniou, Foivos and Katsamanis, Athanasios and Roussos, Anastasios and Maragos, Petros},
+  publisher = {arXiv},
+  year = {2022},
+}
+```
+  
+  
