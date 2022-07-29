@@ -7,3 +7,6 @@
 [submodule "external/av_hubert"]
 	path = external/av_hubert
 	url = https://github.com/facebookresearch/av_hubert
+[submodule "external/face_detection"]
+	path = external/face_detection
+	url = https://github.com/hhj1897/face_detection
