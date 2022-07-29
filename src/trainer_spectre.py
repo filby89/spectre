@@ -39,10 +39,6 @@ class Trainer(object):
                                 lr=self.cfg.train.lr)
 
 
-        # initialize outputs close to DECA result (since we find residual from coarse DECA estimate)
-        self.spectre.E_expression.layers[0].weight.data *= 0.001
-        self.spectre.E_expression.layers[0].bias.data *= 0.001
-
 
         logger.add(os.path.join(self.cfg.output_dir, self.cfg.train.log_dir, 'train.log'))
         if self.cfg.train.write_summary:
@@ -232,8 +228,7 @@ class Trainer(object):
         losses['lipread'] = 1-torch.mean(lr[loss_indices])
 
         # nonlinear regularization of expression parameters
-        # reg = torch.sum((codedict['exp'][loss_indices] - deca_exp[loss_indices]) ** 2,dim=-1) / 2
-        reg = torch.sum((codedict['exp'][loss_indices]) ** 2,dim=-1) / 2
+        reg = torch.sum((codedict['exp'][loss_indices] - deca_exp[loss_indices]) ** 2,dim=-1) / 2
 
         weight_vector = torch.ones_like(reg).cuda()
         weight_vector[reg > 40] = 2e-3
@@ -251,11 +246,7 @@ class Trainer(object):
         for key in losses_key:
             if key == 'expression_reg' and self.cfg.model.regularization_type=='nonlinear': # weight has been added for this specific case
                 all_loss = all_loss + losses[key]
-                print(key, losses[key])
-
             else:
-                print(key, losses[key] * self.cfg.loss.train[key])
-
                 all_loss = all_loss + losses[key] * self.cfg.loss.train[key]
 
         losses['all_loss'] = all_loss
@@ -263,11 +254,6 @@ class Trainer(object):
         if self.cfg.model.regularization_type=='nonlinear':
             losses['expression_reg'] = loss_to_log
 
-        # remove unusable keys
-        # opdict.pop('landmarks3d_world',None)
-        # opdict.pop('grid',None)
-        # opdict.pop('normal_images',None)
-        # opdict.pop('albedo',None)
 
         return losses, opdict, codedict
 
@@ -327,6 +313,12 @@ class Trainer(object):
         self.prepare_data()
         start_epoch = 0
         self.global_step = 0
+
+
+        # initialize outputs close to DECA result (since we find residual from coarse DECA estimate)
+        self.spectre.E_expression.layers[0].weight.data *= 0.001
+        self.spectre.E_expression.layers[0].bias.data *= 0.001
+
 
         scheduler = torch.optim.lr_scheduler.MultiStepLR(self.opt,[50000],gamma=0.2)
 
@@ -695,7 +687,8 @@ class Trainer(object):
 
 
     def prepare_data(self):
-        from datasets.datasets import get_datasets_LRS3, get_datasets_MEAD, get_datasets_TCDTIMIT
+        from datasets.datasets import get_datasets_LRS3
+        from datasets.extra_datasets import get_datasets_MEAD, get_datasets_TCDTIMIT
         self.train_dataset, self.val_dataset, self.test_dataset = get_datasets_LRS3(self.cfg.dataset)
         _, _, self.test_dataset_MEAD = get_datasets_MEAD(self.cfg.dataset)
         _, _, self.test_dataset_TCDTIMIT = get_datasets_TCDTIMIT(self.cfg.dataset)

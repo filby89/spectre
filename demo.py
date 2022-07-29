@@ -196,7 +196,7 @@ def main(args):
             all_images.append(images_array)
 
     vid_shape = tensor2video(torch.cat(all_shape_images, dim=0))[2:-2] # remove padding
-    vid_orig = tensor2video(torch.cat(images_array, dim=0))[2:-2] # remove padding
+    vid_orig = tensor2video(torch.cat(all_images, dim=0))[2:-2] # remove padding
     grid_vid = np.concatenate((vid_shape, vid_orig), axis=2)
 
     assert original_video_length == len(vid_shape)
@@ -207,11 +207,10 @@ def main(args):
         wav = torch.FloatTensor(wav)
         if len(wav.shape) == 1:
             wav = wav.unsqueeze(0)
-        wav = wav[:, 1280:-1280]
 
         torchvision.io.write_video(videofolder+"_shape.mp4", vid_shape, fps=fps, audio_codec='aac', audio_array=wav, audio_fps=sr)
         torchvision.io.write_video(videofolder+"_grid.mp4", grid_vid, fps=fps,
-                                   audio_codec='aac', audio_array=wav, audio_fps=16000)
+                                   audio_codec='aac', audio_array=wav, audio_fps=sr)
 
     else:
         torchvision.io.write_video(videofolder+"_shape.mp4", vid_shape, fps=fps)

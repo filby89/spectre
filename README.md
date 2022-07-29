@@ -56,7 +56,7 @@ python demo.py --input samples/LRS3/0Fi83BHQsMA_00002.mp4 --audio
 
 The audio flag extracts audio from the input video and puts it in the output shape video for visualization purposes. More options and samples will be available soon.
 
-## Training and Testing
+## Training
 In order to train the model you need to download the `trainval` and `test` sets of the [LRS3 dataset](https://www.robots.ox.ac.uk/~vgg/data/lip_reading/lrs3.html). After downloading 
 the dataset, run the following command to extract frames and audio from the videos (audio is not needed for training but it is nice for visualizing the result):
 
@@ -74,11 +74,18 @@ This command downloads the original [DECA](https://github.com/YadiraF/DECA/) pre
 the ResNet50 emotion recognition model provided by [EMOCA](https://github.com/radekd91/emoca),
 the pretrained lipreading model and detected landmarks for the videos of the LRS3 dataset provided by [Visual_Speech_Recognition_for_Multiple_Languages](https://github.com/mpc001/Visual_Speech_Recognition_for_Multiple_Languages).
 
-Finally, run the following command to train the model:
+Finally, you need to create a texture model using the repository [BFM_to_FLAME](https://github.com/TimoBolkart/BFM_to_FLAME#create-texture-model). Due
+to licencing reasons we are not allowed to share it to you.
+
+Now, you can run the following command to train the model:
 
 ```bash
 python train.py --output_dir logs --landmark 50 --relative_landmark 20 --lipread 2 --expression 0.5 --epochs 6 --LRS3_path data/LRS3 --LRS3_landmarks_path data/LRS3_landmarks
 ```
+
+and then test it on the LRS3 dataset test set:
+
+
 
 
 ## Acknowledgements
