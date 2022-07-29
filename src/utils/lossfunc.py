@@ -68,6 +68,9 @@ def rel_dis(landmarks):
     lip_right = landmarks[:, [57, 51, 48, 60, 61, 62, 63], :]
     lip_left = landmarks[:, [8, 33, 54, 64, 67, 66, 65], :]
 
+    # lip_right = landmarks[:, [61, 62, 63], :]
+    # lip_left = landmarks[:, [67, 66, 65], :]
+
     dis = torch.sqrt(((lip_right - lip_left) ** 2).sum(2))  # [bz, 4]
 
     return dis
@@ -81,8 +84,8 @@ def relative_landmark_loss(predicted_landmarks, landmarks_gt, weight=1.):
     pred_lipd = rel_dis(predicted_landmarks[:, :, :2])
     gt_lipd = rel_dis(real_2d[:, :, :2])
 
-    # loss = (pred_lipd - gt_lipd).abs().mean()
-    loss = F.mse_loss(pred_lipd, gt_lipd)
+    loss = (pred_lipd - gt_lipd).abs().mean()
+    # loss = F.mse_loss(pred_lipd, gt_lipd)
 
     return loss.mean()
 

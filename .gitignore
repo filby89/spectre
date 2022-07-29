@@ -31,7 +31,7 @@ Thumbs.db
 ############
 *.mat
 *.pkl
-#*.obj
+*.obj
 *.dat
 *.npz
 
@@ -48,10 +48,3 @@ cluster_scripts
 internal
 data/FLAME2020
 data/FLAMETexture
-src/deca.py
-src/trainer_direct.py
-logs/
-data/ResNet50
-data/deca_model.tar
-data/LRS3_lists.pkl
-data/FLAME_albedo_from_BFM.npz

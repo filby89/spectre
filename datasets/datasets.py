@@ -9,13 +9,14 @@ import pickle
 from .data_utils import landmarks_interpolate
 
 class SpectreDataset(Dataset):
-    def __init__(self, data_list, cfg, test=False):
+    def __init__(self, data_list, landmarks_path, cfg, test=False):
         self.data_list = data_list
         self.dataset_name = cfg.name
         self.image_size = 224
         self.K = cfg.K
         self.test = test
         self.cfg=cfg
+        self.landmarks_path = landmarks_path
 
         if not self.test:
             self.scale = [1.4, 1.8]
@@ -50,8 +51,8 @@ class SpectreDataset(Dataset):
 
         sample = self.data_list[index]
 
-        landmarks_filename = os.path.join("../Visual_Speech_Recognition_for_Multiple_Languages/landmarks/LRS3/","LRS3_landmarks", sample+".pkl")
-        folder_path = os.path.join(self.cfg.LRS3_path, sample)
+        landmarks_filename = os.path.join(self.landmarks_path, sample[0]+".pkl")
+        folder_path = os.path.join(self.cfg.LRS3_path, sample[0])
 
         with open(landmarks_filename, "rb") as pkl_file:
             landmarks = pickle.load(pkl_file)
@@ -77,7 +78,19 @@ class SpectreDataset(Dataset):
             scale = self.scale
 
         for frame_idx in frame_indices:
-            frame = cv2.imread(os.path.join(folder_path,"%06d.jpg"%(frame_idx)))
+            if "LRS3" in self.landmarks_path:
+                frame = cv2.imread(os.path.join(folder_path,"%06d.jpg"%(frame_idx)))
+                folder_path = os.path.join(self.cfg.LRS3_path, sample[0])
+                wav = folder_path + ".wav"
+            else:
+                if 'MEAD' in self.landmarks_path:
+                    folder_path = os.path.join("/gpu-data3/filby/MEAD/rendered/train/MEAD/images", sample[0])
+                    frame = cv2.imread(os.path.join(folder_path,"%06d.png"%(frame_idx)))
+                    wav = folder_path.replace("images","wavs") + ".wav"
+                else:
+                    folder_path = os.path.join("/gpu-data3/filby/EAVTTS/TCDTIMIT_preprocessed/images", sample[0])
+                    frame = cv2.imread(os.path.join(folder_path,"%06d.png"%(frame_idx)))
+                    wav = folder_path.replace("images","wavs") + ".wav"
 
             frame = cv2.cvtColor(frame,cv2.COLOR_BGR2RGB)
             kpt = preprocessed_landmarks[frame_idx]
@@ -94,13 +107,13 @@ class SpectreDataset(Dataset):
         images_array = torch.from_numpy(np.array(images_list)).type(dtype = torch.float32) #K,224,224,3
         kpt_array = torch.from_numpy(np.array(kpt_list)).type(dtype = torch.float32) #K,224,224,3
 
-        text = open(folder_path+".txt").readlines()[0].replace("Text:","").strip()
-        wav = folder_path+".wav"
+        # text = open(folder_path+".txt").readlines()[0].replace("Text:","").strip()
+        text = sample[1] # open(folder_path+".txt").readlines()[0].replace("Text:","").strip()
 
         data_dict = {
             'image': images_array,
             'landmark': kpt_array,
-            'vid_name': sample,
+            'vid_name': sample[0],
             'wav_path': wav, # this is only used for evaluation - you can remove this key from the dictionary if you don't need it
             'text': text,  # this is only used for evaluation - you can remove this key from the dictionary if you don't need it
         }
@@ -120,8 +133,65 @@ def get_datasets_LRS3(config=None):
     train_list = lists[0]
     val_list = lists[1]
     test_list = lists[2]
-
-    return SpectreDataset(train_list, cfg=config), SpectreDataset(val_list, cfg=config), SpectreDataset(test_list,
+    landmarks_path = "../Visual_Speech_Recognition_for_Multiple_Languages/landmarks/LRS3/LRS3_landmarks"
+    return SpectreDataset(train_list, landmarks_path, cfg=config), SpectreDataset(val_list, landmarks_path, cfg=config), SpectreDataset(test_list, landmarks_path,
                                                                                                cfg=config,
                                                                                                test=True)
 
+
+
+
+def get_datasets_MEAD(config=None):
+    import pandas as pd
+    questionnaire_list = pd.read_csv("../utils/MEAD_test_set_final.csv")
+    test_list = [(x[0],x[1]) for x in zip(questionnaire_list.name,questionnaire_list.text)]
+    landmarks_path = "../Visual_Speech_Recognition_for_Multiple_Languages/landmarks/MEAD_images_25fps"
+
+    return None, None, SpectreDataset(test_list, landmarks_path, cfg=config, test=True)
+
+# def get_datasets_MEAD(config=None):
+#     train_list = torch.load('data/MEAD_train_text.pth')
+#     test_list = torch.load('data/MEAD_test_text.pth')
+#
+#     landmarks_path = "../Visual_Speech_Recognition_for_Multiple_Languages/landmarks/MEAD_images_25fps"
+#
+#     return SpectreDataset(train_list, landmarks_path, cfg=config), SpectreDataset(test_list, landmarks_path, cfg=config), SpectreDataset(test_list, landmarks_path, cfg=config, test=True)
+
+def get_datasets_TCDTIMIT(config=None):
+    tcd_root = "/gpu-data3/filby/EAVTTS"
+
+    landmarks_path = "../Visual_Speech_Recognition_for_Multiple_Languages/landmarks/TCDTIMIT_images_25fps"
+
+    root = f"{tcd_root}/TCDTIMIT_preprocessed/TCDSpkrIndepTrainSet.scp"
+    files = open(root).readlines()
+    train_list = []
+    for file in files:
+        f = file.strip().split("/")
+        new_name = f"{f[0]}_{f[-1]}"
+
+        ff = "/".join([f[0],f[1],f[2]])
+
+        text = open(os.path.join(f"{tcd_root}/TCDTIMITprocessing/downloadTCDTIMIT/volunteers",ff,f[-1].upper().replace(".MP4",".txt"))).readlines()
+
+        text = " ".join([x.split()[2].strip() for x in text])
+
+        train_list.append((new_name.split(".")[0],text))
+
+
+    root = f"{tcd_root}/TCDTIMIT_preprocessed/TCDSpkrIndepTestSet.scp"
+    files = open(root).readlines()
+    test_list = []
+    for file in files:
+        f = file.strip().split("/")
+        new_name = f"{f[0]}_{f[-1]}"
+
+        ff = "/".join([f[0],f[1],f[2]])
+
+        text = open(os.path.join(f"{tcd_root}/TCDTIMITprocessing/downloadTCDTIMIT/volunteers",ff,f[-1].upper().replace(".MP4",".txt"))).readlines()
+
+        text = " ".join([x.split()[2].strip() for x in text])
+
+        test_list.append((new_name.split(".")[0],text.upper()))
+
+
+    return SpectreDataset(train_list, landmarks_path, cfg=config), SpectreDataset(test_list, landmarks_path, cfg=config), SpectreDataset(test_list, landmarks_path, cfg=config, test=True)

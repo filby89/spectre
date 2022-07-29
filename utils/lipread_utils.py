@@ -60,37 +60,6 @@ def convert_text_to_visemes(text):
     return text
 
 
-def get_video_lipread_metrics(lipreader, video_path, landmarks, groundtruth_text):
-    """
-
-    :param lipreader: a lipreader
-    :param data: the path of the video, landmarks, and the groundtruth text
-    :return: mouths and lipread metrics
-    """
-
-
-    with torch.no_grad():
-        output = lipreader(video_path, landmarks)
-
-    wer = jiwer.wer(groundtruth_text, output)
-    cer = jiwer.cer(groundtruth_text, output)
-
-    # ---------- convert to visemes -------- #
-    vg = convert_text_to_visemes(groundtruth_text)
-    v = convert_text_to_visemes(output)
-    # -------------------------------------- #
-    werv = jiwer.wer(vg, v)
-    cerv = jiwer.cer(vg, v)
-
-    print(f"hyp: {output}")
-    print(f"hypv: {v}")
-    print(f"ref: {groundtruth_text}")
-    print(f"refv: {vg}")
-
-
-    return wer, cer, werv, cerv
-
-
 
 def save2avi(filename, data=None, fps=25):
     """save2avi. - function taken from Visual Speech Recognition repository
@@ -110,6 +79,7 @@ def save2avi(filename, data=None, fps=25):
 
 def predict_text(lipreader, mouth_sequence):
     from external.Visual_Speech_Recognition_for_Multiple_Languages.espnet.asr.asr_utils import add_results_to_json
+    lipreader.model.eval()
     with torch.no_grad():
         enc_feats, _ = lipreader.model.encoder(mouth_sequence, None)
         enc_feats = enc_feats.squeeze(0)
@@ -126,3 +96,24 @@ def predict_text(lipreader, mouth_sequence):
         transcription = add_results_to_json(nbest_hyps, lipreader.char_list)
 
     return transcription.replace("<eos>", "")
+
+def predict_text_deca(lipreader, mouth_sequence):
+    from external.Visual_Speech_Recognition_for_Multiple_Languages.espnet.asr.asr_utils import add_results_to_json
+    lipreader.model.eval()
+    with torch.no_grad():
+        enc_feats, _ = lipreader.model.encoder(mouth_sequence, None)
+        enc_feats = enc_feats.squeeze(0)
+
+        ys_hat = lipreader.model.ctc.ctc_lo(enc_feats)
+        # print(ys_hat)
+        ys_hat = ys_hat.argmax(1)
+        ys_hat = torch.unique_consecutive(ys_hat, dim=-1)
+
+        ys = [lipreader.model.args.char_list[x] for x in ys_hat if x != 0]
+
+        ys = "".join(ys)
+        ys = ys.replace("<space>", " ")
+
+    return ys.replace("<eos>", "")
+
+

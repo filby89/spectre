@@ -65,7 +65,7 @@ cfg.dataset.fps = 25
 # Options for training
 # ---------------------------------------------------------------------------- #
 cfg.train = CN()
-cfg.train.max_epochs = 20
+cfg.train.max_epochs = 6
 cfg.train.log_dir = 'logs'
 cfg.train.log_steps = 10
 cfg.train.vis_dir = 'train_images'
@@ -74,7 +74,7 @@ cfg.train.write_summary = True
 cfg.train.checkpoint_steps = 10000
 cfg.train.val_vis_dir = 'val_images'
 
-cfg.train.evaluation_steps = 30000
+cfg.train.evaluation_steps = 10000
 
 # ---------------------------------------------------------------------------- #
 # Options for Losses
@@ -82,7 +82,7 @@ cfg.train.evaluation_steps = 30000
 cfg.loss = CN()
 cfg.loss.train = CN()
 
-cfg.model.use_tex = False
+cfg.model.use_tex = True
 cfg.model.regularization_type = 'nonlinear'
 cfg.model.backbone = 'mobilenetv2' # perceptual encoder backbone
 
