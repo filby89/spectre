@@ -48,3 +48,9 @@ cluster_scripts
 internal
 data/FLAME2020
 data/FLAMETexture
+misc/
+data/LRS3_V_WER32.3/
+data/MEAD_test_text.pth
+data/MEAD_train_text.pth
+data/ResNet50/
+logs/

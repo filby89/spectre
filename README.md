@@ -3,8 +3,10 @@
   # SPECTRE: Visual Speech-Aware Perceptual 3D Facial Expression Reconstruction from Videos
 
 [![Paper](https://img.shields.io/badge/arXiv-2207.11094-brightgreen)](https://arxiv.org/abs/2207.11094)
-[![Project WebPage](https://img.shields.io/badge/Project-webpage-blue)](https://filby89.github.io/spectre/)
-
+&nbsp; [![Project WebPage](https://img.shields.io/badge/Project-webpage-blue)](https://filby89.github.io/spectre/)
+&nbsp; <a href='https://youtu.be/P1kqrxWNizI'>
+      <img src='https://img.shields.io/badge/Youtube-Video-red?style=flat&logo=youtube&logoColor=red' alt='Youtube Video'>
+    </a>
 </div>
 
 <p align="center"> 
@@ -44,18 +46,6 @@ Download the FLAME model and the pretrained SPECTRE model:
 bash quick_install.sh
 ```
 
-
-
-[//]: # (Create a new conda environment and install the requirements:)
-
-[//]: # (```bash)
-
-[//]: # (conda create -n "spectre" python=3.8)
-
-[//]: # (pip install -r requirements.txt)
-
-[//]: # (```)
-
 ## Demo
 Samples are included in ``samples`` folder. You can run the demo by running 
 
@@ -66,7 +56,28 @@ python demo.py --input samples/LRS3/0Fi83BHQsMA_00002.mp4 --audio
 The audio flag extracts audio from the input video and puts it in the output shape video for visualization purposes. More options and samples will be available soon.
 
 ## Training and Testing
-Training code will be released shortly in the following week after some refactoring for easier usage.
+In order to train the model you need to download the `trainval` and `test` sets of the [LRS3 dataset](https://www.robots.ox.ac.uk/~vgg/data/lip_reading/lrs3.html). After downloading 
+the dataset, run the following command to extract frames and audio from the videos (audio is not needed for training but it is nice for visualizing the result):
+
+```bash
+python utils/extract_frames_and_audio.py --dataset_path ./data/LRS3
+```
+
+After downloading and preprocessing the dataset, download the rest needed assets:
+
+```bash
+bash get_training_data.sh
+```
+
+This command downloads the original [DECA](https://github.com/YadiraF/DECA/) pretrained model,
+the ResNet50 emotion recognition model provided by [EMOCA](https://github.com/radekd91/emoca),
+the pretrained lipreading model and detected landmarks for the videos of the LRS3 dataset provided by [Visual_Speech_Recognition_for_Multiple_Languages](https://github.com/mpc001/Visual_Speech_Recognition_for_Multiple_Languages).
+
+Finally, run the following command to train the model:
+
+```bash
+python train.py --output_dir logs --landmark 50 --relative_landmark 20 --lipread 2 --expression 0.5 --epochs 6 --LRS3_path data/LRS3 --LRS3_landmarks_path data/LRS3_landmarks
+```
 
 
 ## Acknowledgements

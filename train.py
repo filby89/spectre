@@ -29,9 +29,6 @@ def main(cfg):
 
     trainer.fit()
 
-# import warnings
-# warnings.filterwarnings('ignore')
-
 if __name__ == '__main__':
     from config import parse_args
     cfg = parse_args()

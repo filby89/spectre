@@ -51,7 +51,8 @@ cfg.model.temporal = True
 # Options for Dataset
 # ---------------------------------------------------------------------------- #
 cfg.dataset = CN()
-cfg.dataset.LRS3_path = "/gpu-data3/filby/LRS3"
+cfg.dataset.LRS3_path = "./data/LRS3"
+cfg.dataset.LRS3_landmarks_path = "../Visual_Speech_Recognition_for_Multiple_Languages/landmarks/LRS3/LRS3_landmarks"
 cfg.dataset.batch_size = 1
 cfg.dataset.K = 20
 cfg.dataset.num_workers = 8
@@ -86,7 +87,7 @@ cfg.model.use_tex = True
 cfg.model.regularization_type = 'nonlinear'
 cfg.model.backbone = 'mobilenetv2' # perceptual encoder backbone
 
-cfg.loss.train.landmark = 50 #50
+cfg.loss.train.landmark = 50
 cfg.loss.train.lip_landmarks = 0
 cfg.loss.train.relative_landmark = 50# 50
 cfg.loss.train.photometric_texture = 0
@@ -109,9 +110,11 @@ def update_cfg(cfg, cfg_file):
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('--output_dir', type=str, help='output path')
-    parser.add_argument('--dataset', type=str, default = 'LRS3', help='deca mode')
+    parser.add_argument('--LRS3_path', default=None)
+    parser.add_argument('--LRS3_landmarks_path', default=None)
     parser.add_argument('--model_path', default=None)
     parser.add_argument('--batch-size', type=int, default=1)
+    parser.add_argument('--epochs', type=int, default=6)
     parser.add_argument('--K', type=int, default=20)
     parser.add_argument('--lipread', type=float, default=None)
     parser.add_argument('--expression', type=float, default=None)
@@ -126,7 +129,7 @@ def parse_args():
     cfg = get_cfg_defaults()
 
     cfg.output_dir = args.output_dir
-    cfg.dataset.name = args.dataset
+
     if args.model_path is not None:
         cfg.pretrained_modelpath = args.model_path
 
@@ -150,6 +153,14 @@ def parse_args():
     if args.lr is not None:
         cfg.train.lr = args.lr
 
+    if args.epochs is not None:
+        cfg.train.max_epochs = args.epochs
+
+    if args.LRS3_path is not None:
+        cfg.dataset.LRS3_path = args.LRS3_path
+
+    if args.LRS3_landmarks_path is not None:
+        cfg.dataset.LRS3_landmarks_path = args.LRS3_landmarks_path
 
     cfg.model.backbone = args.backbone
 

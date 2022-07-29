@@ -11,7 +11,6 @@ from .data_utils import landmarks_interpolate
 class SpectreDataset(Dataset):
     def __init__(self, data_list, landmarks_path, cfg, test=False):
         self.data_list = data_list
-        self.dataset_name = cfg.name
         self.image_size = 224
         self.K = cfg.K
         self.test = test
@@ -133,13 +132,10 @@ def get_datasets_LRS3(config=None):
     train_list = lists[0]
     val_list = lists[1]
     test_list = lists[2]
-    landmarks_path = "../Visual_Speech_Recognition_for_Multiple_Languages/landmarks/LRS3/LRS3_landmarks"
+    landmarks_path = config.LRS3_landmarks_path
     return SpectreDataset(train_list, landmarks_path, cfg=config), SpectreDataset(val_list, landmarks_path, cfg=config), SpectreDataset(test_list, landmarks_path,
                                                                                                cfg=config,
                                                                                                test=True)
-
-
-
 
 def get_datasets_MEAD(config=None):
     import pandas as pd
@@ -149,13 +145,6 @@ def get_datasets_MEAD(config=None):
 
     return None, None, SpectreDataset(test_list, landmarks_path, cfg=config, test=True)
 
-# def get_datasets_MEAD(config=None):
-#     train_list = torch.load('data/MEAD_train_text.pth')
-#     test_list = torch.load('data/MEAD_test_text.pth')
-#
-#     landmarks_path = "../Visual_Speech_Recognition_for_Multiple_Languages/landmarks/MEAD_images_25fps"
-#
-#     return SpectreDataset(train_list, landmarks_path, cfg=config), SpectreDataset(test_list, landmarks_path, cfg=config), SpectreDataset(test_list, landmarks_path, cfg=config, test=True)
 
 def get_datasets_TCDTIMIT(config=None):
     tcd_root = "/gpu-data3/filby/EAVTTS"
