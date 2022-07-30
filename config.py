@@ -53,6 +53,13 @@ cfg.model.temporal = True
 cfg.dataset = CN()
 cfg.dataset.LRS3_path = "/gpu-data3/filby/LRS3"
 cfg.dataset.LRS3_landmarks_path = "../Visual_Speech_Recognition_for_Multiple_Languages/landmarks/LRS3/LRS3_landmarks"
+
+cfg.dataset.LRS3_path = "/gpu-data3/filby/LRS3"
+cfg.dataset.LRS3_landmarks_path = "../Visual_Speech_Recognition_for_Multiple_Languages/landmarks/LRS3/LRS3_landmarks"
+
+cfg.dataset.LRS3_path = "/gpu-data3/filby/LRS3"
+cfg.dataset.LRS3_landmarks_path = "../Visual_Speech_Recognition_for_Multiple_Languages/landmarks/LRS3/LRS3_landmarks"
+
 cfg.dataset.batch_size = 1
 cfg.dataset.K = 20
 cfg.dataset.num_workers = 8
@@ -61,6 +68,7 @@ cfg.dataset.scale_min = 1.4
 cfg.dataset.scale_max = 1.8
 cfg.dataset.trans_scale = 0.
 cfg.dataset.fps = 25
+cfg.dataset.test_datasets = ['LRS3']
 
 # ---------------------------------------------------------------------------- #
 # Options for training
@@ -96,6 +104,7 @@ cfg.loss.train.jaw_reg = 200
 cfg.train.lr = 5e-5
 cfg.loss.train.expression = 0.5
 
+cfg.test_mode = False
 
 def get_cfg_defaults():
     """Get a yacs CfgNode object with default values for my_project."""
@@ -110,19 +119,21 @@ def update_cfg(cfg, cfg_file):
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('--output_dir', type=str, help='output path')
-    parser.add_argument('--LRS3_path', default=None)
-    parser.add_argument('--LRS3_landmarks_path', default=None)
-    parser.add_argument('--model_path', default=None)
-    parser.add_argument('--batch-size', type=int, default=1)
-    parser.add_argument('--epochs', type=int, default=6)
-    parser.add_argument('--K', type=int, default=20)
-    parser.add_argument('--lipread', type=float, default=None)
-    parser.add_argument('--expression', type=float, default=None)
-    parser.add_argument('--lr', type=float, default=None)
-    parser.add_argument('--landmark', type=float, default=None)
-    parser.add_argument('--relative_landmark', type=float, default=None)
-    parser.add_argument('--backbone', type=str, default='mobilenetv2')
+    parser.add_argument('--LRS3_path', default=None, type=str, help='path to LRS3 dataset')
+    parser.add_argument('--LRS3_landmarks_path', default=None, type=str, help='path to LRS3 landmarks')
+    parser.add_argument('--model_path', default=None, help='path to pretrained model')
+    parser.add_argument('--batch-size', type=int, default=1, help='the batch size')
+    parser.add_argument('--epochs', type=int, default=6, help='number of epochs to train for')
+    parser.add_argument('--K', type=int, default=20, help='length of sampled frame sequence')
+    parser.add_argument('--lipread', type=float, default=None, help='lipread loss weight')
+    parser.add_argument('--expression', type=float, default=None, help='expression loss weight')
+    parser.add_argument('--lr', type=float, default=None, help='learning rate')
+    parser.add_argument('--landmark', type=float, default=None, help='landmark loss weight')
+    parser.add_argument('--relative_landmark', type=float, default=None, help='relative landmark loss weight')
+    parser.add_argument('--backbone', type=str, default='mobilenetv2', choices=['mobilenetv2', 'resnet50'])
 
+    parser.add_argument('--test', action='store_true', help='test mode')
+    parser.add_argument('--test_datasets', type=str, nargs='+', default=['LRS3'], help='test datasets')
 
     args = parser.parse_args()
 
@@ -163,5 +174,9 @@ def parse_args():
         cfg.dataset.LRS3_landmarks_path = args.LRS3_landmarks_path
 
     cfg.model.backbone = args.backbone
+
+    cfg.test_mode = args.test
+
+    cfg.test_datasets = args.test_datasets
 
     return cfg

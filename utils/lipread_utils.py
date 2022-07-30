@@ -1,17 +1,12 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 
-# Copyright 2021 Imperial College London (Pingchuan Ma)
-# Apache 2.0  (http://www.apache.org/licenses/LICENSE-2.0)
-
 import os
 import torch
-from lipreading.subroutines import LipreadingPipeline
 from phonemizer.backend import EspeakBackend
 from phonemizer.separator import Separator
 separator = Separator(phone='-', word=' ')
 backend = EspeakBackend('en-us', words_mismatch='ignore', with_stress=False)
-import jiwer
 import cv2
 
 # phonemes to visemes map. this was created using Amazon Polly

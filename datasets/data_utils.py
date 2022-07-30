@@ -42,7 +42,7 @@ def create_LRS3_lists(lrs3_path):
     from sklearn.model_selection import train_test_split
     import pickle
     trainval_folder_list = list(os.listdir(f"{lrs3_path}/trainval"))
-    train_folder_list, val_folder_list = train_test_split(trainval_folder_list, test_size=0.1, random_state=42)
+    train_folder_list, val_folder_list = train_test_split(trainval_folder_list, test_size=0.2, random_state=42)
 
 
     train_list = []
