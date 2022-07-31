@@ -318,7 +318,6 @@ class Trainer(object):
                                 lr=self.cfg.train.lr)
 
         scheduler = torch.optim.lr_scheduler.MultiStepLR(self.opt,[50000],gamma=0.2)
-        self.evaluate(self.test_datasets)
 
         for epoch in range(start_epoch, self.cfg.train.max_epochs):
             self.epoch = epoch

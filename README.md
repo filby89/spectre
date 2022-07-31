@@ -46,10 +46,10 @@ PyTorch3d 0.6.2 with pytorch 1.11.0 are also compatible.
 
 
 Clone the repo and its submodules:
-  ```bash
-  git clone --recurse-submodules -j4 https://github.com/filby89/spectre
-  cd spectre
-  ```  
+```bash
+git clone --recurse-submodules -j4 https://github.com/filby89/spectre
+cd spectre
+```  
 
 Install the face_alignment and face_detection packages:
 ```bash
