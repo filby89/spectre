@@ -99,7 +99,7 @@ to licencing reasons we are not allowed to share it to you.
 Now, you can run the following command to train the model:
 
 ```bash
-python main.py --output_dir logs --landmark 50 --relative_landmark 20 --lipread 2 --expression 0.5 --epochs 6 --LRS3_path data/LRS3 --LRS3_landmarks_path data/LRS3_landmarks
+python main.py --output_dir logs --landmark 50 --relative_landmark 25 --lipread 2 --expression 0.5 --epochs 6 --LRS3_path data/LRS3 --LRS3_landmarks_path data/LRS3_landmarks
 ```
 
 and then test it on the LRS3 dataset test set:
