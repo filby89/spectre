@@ -31,6 +31,12 @@ arXiv 2022
 
 
 ## Installation
+Clone the repo and its submodules:
+```bash
+git clone --recurse-submodules -j4 https://github.com/filby89/spectre
+cd spectre
+```  
+
 You need to have installed a working version of Pytorch with Python 3.6 or higher and Pytorch 3D. You can use the following commands to create a working installation:
 ```bash
 conda create -n "spectre" python=3.8
@@ -43,14 +49,6 @@ pip install -r requirements.txt # install the rest of the requirements
 Installing a working setup of Pytorch3d with Pytorch can be a bit tricky. For development we used Pytorch3d 0.6.1 with Pytorch 1.10.0. 
 
 PyTorch3d 0.6.2 with pytorch 1.11.0 are also compatible. 
-
-
-
-Clone the repo and its submodules:
-```bash
-git clone --recurse-submodules -j4 https://github.com/filby89/spectre
-cd spectre
-```  
 
 Install the face_alignment and face_detection packages:
 ```bash
