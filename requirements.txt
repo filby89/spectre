@@ -6,3 +6,4 @@ av==9.2.0
 loguru==0.6.0
 tensorboard==2.9.1
 pytorch_lightning==1.5
+opencv-python==4.6.0.66
