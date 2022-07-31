@@ -56,7 +56,7 @@ python demo.py --input samples/LRS3/0Fi83BHQsMA_00002.mp4 --audio
 
 The audio flag extracts audio from the input video and puts it in the output shape video for visualization purposes. More options and samples will be available soon.
 
-## Training
+## Training and Testing
 In order to train the model you need to download the `trainval` and `test` sets of the [LRS3 dataset](https://www.robots.ox.ac.uk/~vgg/data/lip_reading/lrs3.html). After downloading 
 the dataset, run the following command to extract frames and audio from the videos (audio is not needed for training but it is nice for visualizing the result):
 
@@ -86,7 +86,13 @@ python main.py --output_dir logs --landmark 50 --relative_landmark 20 --lipread 
 and then test it on the LRS3 dataset test set:
 
 ```bash
-python main.py --test --output_dir --LRS3_path data/LRS3 --LRS3_landmarks_path data/LRS3_landmarks
+python main.py --test --output_dir logs --LRS3_path data/LRS3 --LRS3_landmarks_path data/LRS3_landmarks
+```
+
+and run lipreading with AV-hubert:
+
+```bash
+bash run_av_hubert.sh --videos "logs/test_videos_000000/*_mouth.avi --LRS3_path data/LRS3
 ```
 
 

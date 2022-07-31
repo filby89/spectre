@@ -585,39 +585,14 @@ class Trainer(object):
                         torchvision.io.write_video(out_vid_path.replace(".mp4","_grid.mp4"), grid_vid, fps=self.cfg.dataset.fps)
 
 
-                    # you can uncomment the following if you want to create a grid to compare with other methods
+                    # you can uncomment the following and change ffmpeg paths if you want to create a grid to compare with other methods
                     # if enn == 0:
                     #     st = "ffmpeg -i {} -i {} -i {}  -filter_complex hstack=inputs=3 {} -y ".format(
-                    #         os.path.join("/gpu-data3/filby/EAVTTS_experiments/audiovisual_DECA_results/cross/LRS3_test/DECA_ORIG_new/test_videos_final", vid_name + "_shape.mp4"),
-                    #         os.path.join("/gpu-data3/filby/EAVTTS_experiments/audiovisual_DECA_results/cross/LRS3_test/EMOCALITE-lr4-er1e3-em0.5-jr200-lr5e5sched0.2-nonlinear_40_1e3_2e3-decadiff-rigid0-lmkfull50nomouth-rlmk50-noscale/test_videos_final", vid_name + "_shape.mp4"),
+                    #         os.path.join("/gpu-data3/filby/EAVTTS_experiments/audiovisual_DECA_results/cross/LRS3_test/DECA/", vid_name + "_shape.mp4"),
+                    #         os.path.join("/gpu-data3/filby/EAVTTS_experiments/audiovisual_DECA_results/cross/LRS3_test/EMOCA/", vid_name + "_shape.mp4"),
                     #         os.path.join(out_vid_path.replace(".mp4", "_grid.mp4")),
                     #         os.path.join(out_vid_path.replace(".mp4", "_shape_grid.mp4"))
                     #     )
-                    # elif enn == 1:
-                    #     st = "ffmpeg -i {} -i {} -i {}  -filter_complex hstack=inputs=3 {} -y ".format(
-                    #         os.path.join(
-                    #             "/gpu-data3/filby/EAVTTS_experiments/audiovisual_DECA_results/cross/MEAD_test/DECA_ORIG/test_videos_final",
-                    #             vid_name + "_shape.mp4"),
-                    #         os.path.join(
-                    #             "/gpu-data3/filby/EAVTTS_experiments/audiovisual_DECA_results/cross/MEAD_test/EMOCALITE-lr4-er1e3-em0.5-jr200-lr5e5sched0.2-nonlinear_40_1e3_2e3-decadiff-rigid0-lmkfull50nomouth-rlmk50-noscale/test_videos_final",
-                    #             vid_name + "_shape.mp4"),
-                    #         os.path.join(out_vid_path.replace(".mp4", "_grid.mp4")),
-                    #         os.path.join(out_vid_path.replace(".mp4", "_shape_grid.mp4"))
-                    #     )
-                    # else:
-                    #     st = "ffmpeg -i {} -i {} -i {}  -filter_complex hstack=inputs=3 {} -y ".format(
-                    #         os.path.join(
-                    #             "/gpu-data3/filby/EAVTTS_experiments/audiovisual_DECA_results/cross/TCDTIMIT_test/DECA_ORIG/test_videos_final",
-                    #             vid_name + "_shape.mp4"),
-                    #         os.path.join(
-                    #             "/gpu-data3/filby/EAVTTS_experiments/audiovisual_DECA_results/cross/TCDTIMIT_test/EMOCALITE-lr4-er1e3-em0.5-jr200-lr5e5sched0.2-nonlinear_40_1e3_2e3-decadiff-rigid0-lmkfull50nomouth-rlmk50-noscale/test_videos_final",
-                    #             vid_name + "_shape.mp4"),
-                    #         os.path.join(out_vid_path.replace(".mp4", "_grid.mp4")),
-                    #         os.path.join(out_vid_path.replace(".mp4", "_shape_grid.mp4"))
-                    #     )
-                    #
-                    # os.system(st)
-                    # print(st)
 
                     # ---- extract and save the mouth as well - useful for evaluation with av hubert afterwards ---- #
                     mouth_sequence = self.cut_mouth(vid, vid_landmarks, convert_grayscale=True)
