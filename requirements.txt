@@ -7,3 +7,5 @@ loguru==0.6.0
 tensorboard==2.9.1
 pytorch_lightning==1.5
 opencv-python==4.6.0.66
+phonemizer==3.2.1
+jiwer==2.3.0

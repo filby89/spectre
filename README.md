@@ -104,7 +104,7 @@ python main.py --output_dir logs --landmark 50 --relative_landmark 25 --lipread 
 and then test it on the LRS3 dataset test set:
 
 ```bash
-python main.py --test --output_dir logs --LRS3_path data/LRS3 --LRS3_landmarks_path data/LRS3_landmarks
+python main.py --test --output_dir logs --model_path logs/model.tar --LRS3_path data/LRS3 --LRS3_landmarks_path data/LRS3_landmarks
 ```
 
 and run lipreading with AV-hubert: 
