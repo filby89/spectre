@@ -33,6 +33,7 @@ arXiv 2022
 ## Installation
 You need to have installed a working version of Pytorch with Python 3.6 or higher and Pytorch 3D. You can use the following commands to create a working installation:
 ```bash
+conda create -n "spectre" python=3.8
 conda install -c pytorch pytorch=1.11.0 torchvision torchaudio # you might need to select cudatoolkit version here by adding e.g. cudatoolkit=11.3
 conda install -c conda-forge -c fvcore fvcore iopath 
 conda install pytorch3d -c pytorch3d
