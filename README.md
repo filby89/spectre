@@ -10,6 +10,12 @@
 </div>
 
 <p align="center"> 
+<img src="samples/visualizations/M003_level_1_angry_014_grid.gif">
+<img src="samples/visualizations/test_BImnT7lcLDE_00003_grid.gif">
+</p>
+
+
+<p align="center"> 
 <img src="cover.png">
 </p>
 <p align="center"> Our method performs visual-speech aware 3D reconstruction so that speech perception from the original footage is preserved in the reconstructed talking head. On the left we include the word/phrase being said for each example. <p align="center">
@@ -25,7 +31,17 @@ arXiv 2022
 
 
 ## Installation
-You need to have installed a working version of Pytorch with Python 3.6 or higher and Pytorch 3D.
+You need to have installed a working version of Pytorch with Python 3.6 or higher and Pytorch 3D. You can use the following commands to create a working installation:
+```bash
+conda install -c pytorch pytorch=1.11.0 torchvision torchaudio # you might need to select cudatoolkit version here by adding e.g. cudatoolkit=11.3
+conda install -c conda-forge -c fvcore fvcore iopath 
+conda install pytorch3d -c pytorch3d
+pip install -r requirements.txt # install the rest of the requirements
+```
+
+Installing a working setup of pytorch3d with pytorch can be a bit tricky. For development we used Pytorch3d 0.6.1 with Pytorch 1.10.0. PyTorch3d 0.6.2 with pytorch 1.11.0 are also compatible. 
+
+
 
 Clone the repo and its submodules:
   ```bash
@@ -44,6 +60,7 @@ cd ../..
 
 Download the FLAME model and the pretrained SPECTRE model:
 ```bash
+pip install gdown
 bash quick_install.sh
 ```
 

@@ -29,7 +29,7 @@ FILEID=1yHd4QwC7K_9Ro2OM_hC7pKUT2URPvm_f
 FILENAME=LRS3_V_WER32.3.zip
 wget --load-cookies /tmp/cookies.txt "https://docs.google.com/uc?export=download&confirm=$(wget --quiet --save-cookies /tmp/cookies.txt --keep-session-cookies --no-check-certificate 'https://docs.google.com/uc?export=download&id='${FILEID} -O- | sed -rn 's/.*confirm=([0-9A-Za-z_]+).*/\1\n/p')&id=${FILEID}" -O $FILENAME && rm -rf /tmp/cookies.txt
 unzip $FILENAME -d data/
-rm LRS3_V_WER32.zip
+rm LRS3_V_WER32.3.zip
 
 echo -e "\nDownloading landmarks for LRS3 dataset ..."
 
