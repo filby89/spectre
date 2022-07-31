@@ -154,19 +154,19 @@ if __name__ == "__main__":
     #     transcriptions.append(text)
 
     # if running on MEAD uncomment the following:
-    gt = open("data/list_full_mead_annotated.txt").readlines()
-    gt_dic = {}
-    for line in gt:
-        gt_dic[line.split()[0]] = " ".join(line.split()[1:])
-    for video in video_list:
-        video_name = os.path.basename(video).replace("_mouth", "")
-        # print(video_name)
-        subject = video_name.split("_")[0]
-        clip = video_name.split(".")[0].split("_")[1].upper() + ".txt"
-
-        text = gt_dic[video_name.split(".")[0].replace("_mouth","")]
-
-        transcriptions.append(text)
+    # gt = open("data/list_full_mead_annotated.txt").readlines()
+    # gt_dic = {}
+    # for line in gt:
+    #     gt_dic[line.split()[0]] = " ".join(line.split()[1:])
+    # for video in video_list:
+    #     video_name = os.path.basename(video).replace("_mouth", "")
+    #     # print(video_name)
+    #     subject = video_name.split("_")[0]
+    #     clip = video_name.split(".")[0].split("_")[1].upper() + ".txt"
+    #
+    #     text = gt_dic[video_name.split(".")[0].replace("_mouth","")]
+    #
+    #     transcriptions.append(text)
 
     run_lipreading(video_list, transcriptions)
 

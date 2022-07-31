@@ -191,9 +191,8 @@ def main(args):
                     codedict[key] = codedict[key][2:-2]
 
             opdict, visdict = spectre.decode(codedict, rendering=True, vis_lmk=False, return_vis=True)
-
             all_shape_images.append(visdict['shape_images'].detach().cpu())
-            all_images.append(images_array)
+            all_images.append(codedict['images'].detach().cpu())
 
     vid_shape = tensor2video(torch.cat(all_shape_images, dim=0))[2:-2] # remove padding
     vid_orig = tensor2video(torch.cat(all_images, dim=0))[2:-2] # remove padding

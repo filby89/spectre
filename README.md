@@ -39,7 +39,9 @@ conda install pytorch3d -c pytorch3d
 pip install -r requirements.txt # install the rest of the requirements
 ```
 
-Installing a working setup of pytorch3d with pytorch can be a bit tricky. For development we used Pytorch3d 0.6.1 with Pytorch 1.10.0. PyTorch3d 0.6.2 with pytorch 1.11.0 are also compatible. 
+Installing a working setup of Pytorch3d with Pytorch can be a bit tricky. For development we used Pytorch3d 0.6.1 with Pytorch 1.10.0. 
+
+PyTorch3d 0.6.2 with pytorch 1.11.0 are also compatible. 
 
 
 
@@ -71,7 +73,7 @@ Samples are included in ``samples`` folder. You can run the demo by running
 python demo.py --input samples/LRS3/0Fi83BHQsMA_00002.mp4 --audio
 ```
 
-The audio flag extracts audio from the input video and puts it in the output shape video for visualization purposes. More options and samples will be available soon.
+The audio flag extracts audio from the input video and puts it in the output shape video for visualization purposes.
 
 ## Training and Testing
 In order to train the model you need to download the `trainval` and `test` sets of the [LRS3 dataset](https://www.robots.ox.ac.uk/~vgg/data/lip_reading/lrs3.html). After downloading 
@@ -106,12 +108,12 @@ and then test it on the LRS3 dataset test set:
 python main.py --test --output_dir logs --LRS3_path data/LRS3 --LRS3_landmarks_path data/LRS3_landmarks
 ```
 
-and run lipreading with AV-hubert:
+and run lipreading with AV-hubert: 
 
 ```bash
-bash run_av_hubert.sh --videos "logs/test_videos_000000/*_mouth.avi --LRS3_path data/LRS3
+# and run lipreading with our script
+bash run_av_hubert.sh --videos "logs/test_videos_000000/*_mouth.avi --LRS3_path data/LRS3"
 ```
-
 
 
 ## Acknowledgements
