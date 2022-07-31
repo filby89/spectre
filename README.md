@@ -72,7 +72,7 @@ Samples are included in ``samples`` folder. You can run the demo by running
 python demo.py --input samples/LRS3/0Fi83BHQsMA_00002.mp4 --audio
 ```
 
-The audio flag extracts audio from the input video and puts it in the output shape video for visualization purposes.
+The audio flag extracts audio from the input video and puts it in the output shape video for visualization purposes (ffmpeg is required for video creation).
 
 ## Training and Testing
 In order to train the model you need to download the `trainval` and `test` sets of the [LRS3 dataset](https://www.robots.ox.ac.uk/~vgg/data/lip_reading/lrs3.html). After downloading 
