@@ -1,9 +1,6 @@
 [submodule "external/face_alignment"]
 	path = external/face_alignment
 	url = https://github.com/hhj1897/face_alignment.git
-[submodule "external/Visual_Speech_Recognition_for_Multiple_Languages"]
-	path = external/Visual_Speech_Recognition_for_Multiple_Languages
-	url = https://github.com/filby89/Visual_Speech_Recognition_for_Multiple_Languages.git
 [submodule "external/av_hubert"]
 	path = external/av_hubert
 	url = https://github.com/facebookresearch/av_hubert
