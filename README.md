@@ -55,10 +55,15 @@ Install the face_alignment and face_detection packages:
 cd external/face_alignment
 pip install -e .
 cd ../face_detection
+git lfs pull
 pip install -e .
 cd ../..
 ```
-
+You may need to install git-lfs to run the above commands. [More details](https://stackoverflow.com/questions/48734119/git-lfs-is-not-a-git-command-unclear)  
+```bash
+curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | sudo bash
+sudo apt-get install git-lfs
+```
 Download the FLAME model and the pretrained SPECTRE model:
 ```bash
 pip install gdown
