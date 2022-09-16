@@ -570,7 +570,7 @@ class Trainer(object):
                     # ---- load wav file as well to put it in the output video ---- #
                     if 'wav_path' in batch:
                         wav, sr = torchaudio.load(batch['wav_path'])
-                        wav = wav#[:,1280:-1280]
+                        wav = wav[:,1280:-1280]
 
                         # ---- save rendered, shape, and original videos removing pads---- #
                         torchvision.io.write_video(out_vid_path, vid_rendered, fps=self.cfg.dataset.fps, audio_codec='aac', audio_array=wav, audio_fps=16000)
