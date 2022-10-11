@@ -128,12 +128,14 @@ class SPECTRE(nn.Module):
         '''
         code_dict = {}
         start = 0
+
         for key in num_dict:
             end = start + int(num_dict[key])
-            code_dict[key] = code[:, start:end]
+            code_dict[key] = code[..., start:end]
             start = end
             if key == 'light':
-                code_dict[key] = code_dict[key].reshape(code_dict[key].shape[0], 9, 3)
+                dims_ = code_dict[key].ndim -1 # (to be able to handle batches of videos)
+                code_dict[key] = code_dict[key].reshape(*code_dict[key].shape[:dims_], 9, 3)
         return code_dict
 
     def encode(self, images):
@@ -142,12 +144,12 @@ class SPECTRE(nn.Module):
 
         codedict = self.decompose_code(parameters, self.param_dict)
         deca_exp = codedict['exp'].clone()
-        deca_jaw = codedict['pose'][:,3:].clone()
+        deca_jaw = codedict['pose'][...,3:].clone()
 
         codedict['images'] = images
 
         codedict['exp'], jaw = self.E_expression(images)
-        codedict['pose'][:, 3:] = jaw
+        codedict['pose'][..., 3:] = jaw
 
         return codedict, deca_exp, deca_jaw
 
@@ -155,6 +157,16 @@ class SPECTRE(nn.Module):
     def decode(self, codedict, rendering=True, vis_lmk=True, return_vis=True,
                render_orig=False, original_image=None, tform=None):
         images = codedict['images']
+
+        is_video_batch = images.ndim == 5
+        if is_video_batch:
+            B, T, C, H, W = images.shape
+            images = images.view(B*T, C, H, W)
+            for key in codedict.keys():
+                # if key != 'images':
+                codedict[key] = codedict[key].view(B*T, *codedict[key].shape[2:])
+
+
         batch_size = images.shape[0]
 
         ## decode
@@ -222,6 +234,10 @@ class SPECTRE(nn.Module):
             landmarks3d = torch.cat([landmarks3d, landmarks3d_vis], dim=2)
             opdict['landmarks3d'] = landmarks3d
 
+        if is_video_batch:
+            for key in opdict.keys():
+                opdict[key] = opdict[key].view(B, T, *opdict[key].shape[1:])
+
         if return_vis:
             ## render shape
             shape_images, _, grid, alpha_images, pos_mask = self.render.render_shape(verts, trans_verts, h=h, w=w,
@@ -235,6 +251,10 @@ class SPECTRE(nn.Module):
                 'shape_images': shape_images,
                 # 'rendered_images': ops['images']
             }
+
+            if is_video_batch:
+                for key in visdict.keys():
+                    visdict[key] = visdict[key].view(B, T, *visdict[key].shape[1:])
 
             return opdict, visdict
 

@@ -29,18 +29,32 @@ class PerceptualEncoder(nn.Module):
         self.backbone = cfg.backbone
 
     def forward(self, inputs):
+        is_video_batch = inputs.ndim == 5
+
         if self.backbone == 'resnet50':
             features = self.encoder(inputs).squeeze(-1).squeeze(-1)
         else:
-            features = self.encoder.features(inputs)
+            inputs_ = inputs
+            if is_video_batch:
+                B, T, C, H, W = inputs.shape
+                inputs_ = inputs.view(B * T, C, H, W)
+            features = self.encoder.features(inputs_)
             features = nn.functional.adaptive_avg_pool2d(features, (1, 1)).squeeze(-1).squeeze(-1)
+            if is_video_batch:
+                features = features.view(B, T, -1)
 
         features = features
-        features = features.permute(1,0).unsqueeze(0)
+        if is_video_batch:
+            features = features.permute(0, 2, 1)
+        else:
+            features = features.permute(1,0).unsqueeze(0)
 
         features = self.temporal(features)
 
-        features = features.squeeze(0).permute(1,0)
+        if is_video_batch:
+            features = features.permute(0, 2, 1)
+        else:
+            features = features.squeeze(0).permute(1,0)
 
         parameters = self.layers(features)
 
@@ -64,8 +78,13 @@ class ResnetEncoder(nn.Module):
         )
 
     def forward(self, inputs):
-        features = self.encoder(inputs)
+        inputs_ = inputs
+        if inputs.ndim == 5: # batch of videos
+            B, T, C, H, W = inputs.shape
+            inputs_ = inputs.view(B * T, C, H, W)
+        features = self.encoder(inputs_)
         parameters = self.layers(features)
-
+        if inputs.ndim == 5: # batch of videos
+            parameters = parameters.view(B, T, -1)
         return parameters
 
