@@ -162,9 +162,11 @@ class SPECTRE(nn.Module):
         if is_video_batch:
             B, T, C, H, W = images.shape
             images = images.view(B*T, C, H, W)
-            for key in codedict.keys():
+            codedict_ = codedict 
+            codedict = {}
+            for key in codedict_.keys():
                 # if key != 'images':
-                codedict[key] = codedict[key].view(B*T, *codedict[key].shape[2:])
+                codedict[key] = codedict_[key].view(B*T, *codedict_[key].shape[2:])
 
 
         batch_size = images.shape[0]
