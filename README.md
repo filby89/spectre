@@ -116,7 +116,7 @@ and run lipreading with AV-hubert:
 
 ```bash
 # and run lipreading with our script
-bash run_av_hubert.sh --videos "logs/test_videos_000000/*_mouth.avi --LRS3_path data/LRS3"
+python utils/run_av_hubert.py --videos "logs/test_videos_000000/*_mouth.avi --LRS3_path data/LRS3"
 ```
 
 
