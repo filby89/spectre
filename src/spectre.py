@@ -112,7 +112,7 @@ class SPECTRE(nn.Module):
             except Exception as e:
                 print(f'Missing keys {e} in expression encoder weights. If starting training from scratch this is normal.')
         else:
-            raise(f'please check model path: {model_path}')
+            raise RuntimeError(f'please check model path: {model_path}')
 
         # eval mode
         self.E_flame.eval()
