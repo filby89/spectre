@@ -27,7 +27,11 @@ Visual Speech-Aware Perceptual 3D Facial Expression Reconstruction from Videos
 Panagiotis P. Filntisis, George Retsinas, Foivos Paraperas-Papantoniou, Athanasios Katsamanis, Anastasios Roussos, and Petros Maragos
 arXiv 2022
 ```
+## News
 
+- 🔧 SPECTRE has been integrated into [EMOCAv2](https://github.com/radekd91/emoca)!
+- 🆕 Check out our new work on 3D face reconstruction, [SMIRK](https://github.com/georgeretsi/smirk), which achieves state-of-the-art results on facial expressions!  
+  Learn more on the [project page](https://georgeretsi.github.io/smirk/) and in the [paper](https://arxiv.org/pdf/2404.04104).
 
 
 ## Installation
